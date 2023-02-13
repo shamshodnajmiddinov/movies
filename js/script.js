@@ -7,15 +7,19 @@ const promo__genre = document.querySelector('.promo__genre')
 const promo__title = document.querySelector('.promo__title')
 const promo__descr = document.querySelector('.promo__descr')
 const promo__ratings = document.querySelectorAll('.promo__ratings span')
-
 const promoNav = document.querySelector('.promo__menu-list ul')
+const modal = document.querySelector('.modal')
+const modal_img = modal.querySelector('img')
+const closes = document.querySelector('.close')
+const modal_bg = document.querySelector('.modal_bg')
 
 
 let genre = []
 
-
 function reload(arr) {
     for (let item of arr) {
+        // genre.push(item.Title)
+
         const promo_li = document.createElement('li')
         const deletes = document.createElement('div')
         promo_li.classList.add('promo__interactive-item')
@@ -36,7 +40,8 @@ function reload(arr) {
                 promo__ratings[1].innerHTML = i.Source
             }
             deletes.onclick = () => {
-               ul.removeChild(promo_li)
+             openModal(item)
+                ul.removeChild(promo_li)
             }
             showMoviePromo(item)
         }
@@ -47,6 +52,7 @@ function reload(arr) {
 
 function showMoviePromo(movie) {
     promo_bg.style.background = `url(${movie.Poster})`
+    modal_img.src = movie.Poster
 }
 
 function NavReload(data) {
@@ -64,6 +70,32 @@ function NavReload(data) {
     }
 }
 
+function openModal(data) {
+    modal.style.display = 'flex'
+    modal_bg.style.display = "block"
+    modalSpan.innerHTML = data
+
+    modalButton.onclick = () => {
+        if (modalInput.value.trim() === data) {
+            arr = arr.filter(item => item !== data)
+            reload(arr, ol)
+            modal.style.display = ""
+            modalInput.value = ""
+        } else {
+            alert('error')
+        }
+    }
+}
+
+
+
+closes.onclick = () => {
+    modal_bg.style.display = "none"
+    modal.style.display = "none"
+
+}
+
+reload(movies, ul)
 
 reload(movies)
 NavReload(movies)
